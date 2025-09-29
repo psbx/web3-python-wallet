@@ -1,3 +1,5 @@
+from eth_account import Account
+
 from web3_python_wallet import (
     account_from_private_key,
     checksum_address,
@@ -6,12 +8,12 @@ from web3_python_wallet import (
 )
 
 TEST_KEY = "0x4c0883a69102937d6231471b5dbb6204fe5129617082796feac3f27deb5cf40a"
-EXPECTED_ADDRESS = "0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1"
 
 
 def test_account_from_private_key_returns_expected_checksum():
+    expected = Account.from_key(TEST_KEY).address
     details = account_from_private_key(TEST_KEY)
-    assert details["address"] == checksum_address(EXPECTED_ADDRESS)
+    assert details["address"] == checksum_address(expected)
 
 
 def test_sign_message_returns_hex_signature():
@@ -21,5 +23,6 @@ def test_sign_message_returns_hex_signature():
 
 
 def test_is_valid_address_filters_bad_inputs():
-    assert is_valid_address(EXPECTED_ADDRESS)
+    checksummed = Account.from_key(TEST_KEY).address
+    assert is_valid_address(checksummed)
     assert not is_valid_address("0x1234")

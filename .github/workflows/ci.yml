@@ -12,3 +12,4 @@ jobs:
       - run: pytest -q
         env:
           PYTHONPATH: ${{ github.workspace }}
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
